@@ -1,0 +1,4 @@
+raw.properties       680 rows
+raw.units         33,000 rows
+raw.priorities         4 rows
+raw.tickets      149,769 rows

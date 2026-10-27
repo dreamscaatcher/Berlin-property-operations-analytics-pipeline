@@ -1,0 +1,70 @@
+02:33:52  Running with dbt=1.12.6
+02:33:52  Registered adapter: duckdb=1.11.0
+02:33:52  Found 7 models, 21 data tests, 4 sources, 501 macros
+02:33:52  
+02:33:52  Concurrency: 4 threads (target='dev')
+02:33:52  
+02:33:52  3 of 28 START sql view model staging.stg_tickets ............................... [RUN]
+02:33:52  2 of 28 START sql view model staging.stg_properties ............................ [RUN]
+02:33:52  4 of 28 START sql view model staging.stg_units ................................. [RUN]
+02:33:52  1 of 28 START sql view model staging.stg_priorities ............................ [RUN]
+02:33:53  4 of 28 OK created sql view model staging.stg_units ............................ [OK in 0.11s]
+02:33:53  2 of 28 OK created sql view model staging.stg_properties ....................... [OK in 0.12s]
+02:33:53  1 of 28 OK created sql view model staging.stg_priorities ....................... [OK in 0.12s]
+02:33:53  3 of 28 OK created sql view model staging.stg_tickets .......................... [OK in 0.13s]
+02:33:53  5 of 28 START test not_null_stg_units_unit_id .................................. [RUN]
+02:33:53  7 of 28 START test not_null_stg_priorities_priority ............................ [RUN]
+02:33:53  6 of 28 START test unique_stg_units_unit_id .................................... [RUN]
+02:33:53  8 of 28 START test not_null_stg_properties_property_id ......................... [RUN]
+02:33:53  8 of 28 PASS not_null_stg_properties_property_id ............................... [PASS in 0.07s]
+02:33:53  7 of 28 PASS not_null_stg_priorities_priority .................................. [PASS in 0.07s]
+02:33:53  5 of 28 PASS not_null_stg_units_unit_id ........................................ [PASS in 0.07s]
+02:33:53  9 of 28 START test unique_stg_priorities_priority .............................. [RUN]
+02:33:53  10 of 28 START test unique_stg_properties_property_id .......................... [RUN]
+02:33:53  11 of 28 START test accepted_values_stg_tickets_priority__P1__P2__P3__P4 ....... [RUN]
+02:33:53  6 of 28 PASS unique_stg_units_unit_id .......................................... [PASS in 0.08s]
+02:33:53  12 of 28 START test not_null_stg_tickets_created_at ............................ [RUN]
+02:33:53  9 of 28 PASS unique_stg_priorities_priority .................................... [PASS in 0.06s]
+02:33:53  13 of 28 START test not_null_stg_tickets_property_id ........................... [RUN]
+02:33:53  10 of 28 PASS unique_stg_properties_property_id ................................ [PASS in 0.07s]
+02:33:53  14 of 28 START test not_null_stg_tickets_ticket_id ............................. [RUN]
+02:33:53  13 of 28 PASS not_null_stg_tickets_property_id ................................. [PASS in 0.02s]
+02:33:53  15 of 28 START test relationships_stg_tickets_property_id__property_id__ref_stg_properties_  [RUN]
+02:33:53  12 of 28 PASS not_null_stg_tickets_created_at .................................. [PASS in 0.06s]
+02:33:53  11 of 28 PASS accepted_values_stg_tickets_priority__P1__P2__P3__P4 ............. [PASS in 0.10s]
+02:33:53  16 of 28 START test unique_stg_tickets_ticket_id ............................... [RUN]
+02:33:53  14 of 28 PASS not_null_stg_tickets_ticket_id ................................... [PASS in 0.04s]
+02:33:53  17 of 28 START sql table model marts.dim_property .............................. [RUN]
+02:33:53  17 of 28 OK created sql table model marts.dim_property ......................... [OK in 0.07s]
+02:33:53  18 of 28 START test not_null_dim_property_property_id .......................... [RUN]
+02:33:53  19 of 28 START test unique_dim_property_property_id ............................ [RUN]
+02:33:53  15 of 28 PASS relationships_stg_tickets_property_id__property_id__ref_stg_properties_  [PASS in 0.11s]
+02:33:53  18 of 28 PASS not_null_dim_property_property_id ................................ [PASS in 0.02s]
+02:33:53  19 of 28 PASS unique_dim_property_property_id .................................. [PASS in 0.03s]
+02:33:53  16 of 28 PASS unique_stg_tickets_ticket_id ..................................... [PASS in 0.12s]
+02:33:53  20 of 28 START sql table model marts.fact_maintenance_ticket ................... [RUN]
+02:33:53  20 of 28 OK created sql table model marts.fact_maintenance_ticket .............. [OK in 0.26s]
+02:33:53  24 of 28 START test relationships_fact_maintenance_ticket_property_id__property_id__ref_dim_property_  [RUN]
+02:33:53  23 of 28 START test not_null_fact_maintenance_ticket_ticket_id ................. [RUN]
+02:33:53  22 of 28 START test assert_ticket_resolved_after_created ....................... [RUN]
+02:33:53  21 of 28 START test accepted_values_fact_maintenance_ticket_priority__P1__P2__P3__P4  [RUN]
+02:33:53  24 of 28 PASS relationships_fact_maintenance_ticket_property_id__property_id__ref_dim_property_  [PASS in 0.05s]
+02:33:53  25 of 28 START test unique_fact_maintenance_ticket_ticket_id ................... [RUN]
+02:33:53  22 of 28 FAIL 190 assert_ticket_resolved_after_created ......................... [FAIL 190 in 0.05s]
+02:33:53  21 of 28 PASS accepted_values_fact_maintenance_ticket_priority__P1__P2__P3__P4 . [PASS in 0.05s]
+02:33:53  23 of 28 PASS not_null_fact_maintenance_ticket_ticket_id ....................... [PASS in 0.05s]
+02:33:53  25 of 28 PASS unique_fact_maintenance_ticket_ticket_id ......................... [PASS in 0.03s]
+02:33:53  26 of 28 SKIP relation marts.mart_tickets_by_district_month .................... [SKIP]
+02:33:53  27 of 28 SKIP test not_null_mart_tickets_by_district_month_created_month ....... [SKIP]
+02:33:53  28 of 28 SKIP test not_null_mart_tickets_by_district_month_district ............ [SKIP]
+02:33:53  
+02:33:53  Finished running 3 table models, 21 data tests, 4 view models in 0 hours 0 minutes and 0.91 seconds (0.91s).
+02:33:53  
+02:33:53  Completed with 1 error, 0 partial successes, and 0 warnings:
+02:33:53  
+02:33:53  [ERROR]: in test assert_ticket_resolved_after_created (tests/assert_ticket_resolved_after_created.sql)
+02:33:53    Got 190 results, configured to fail if != 0
+02:33:53  
+02:33:53    compiled code at target/compiled/berlin/tests/assert_ticket_resolved_after_created.sql
+02:33:53  
+02:33:53  Done. PASS=24 WARN=0 ERROR=1 SKIP=3 NO-OP=0 REUSED=0 TOTAL=28

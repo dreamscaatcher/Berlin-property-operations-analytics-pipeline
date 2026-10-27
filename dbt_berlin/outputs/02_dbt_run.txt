@@ -1,0 +1,27 @@
+02:33:43  Running with dbt=1.12.6
+02:33:44  Registered adapter: duckdb=1.11.0
+02:33:44  Unable to do partial parsing because saved manifest not found. Starting full parse.
+02:33:45  Found 7 models, 21 data tests, 4 sources, 501 macros
+02:33:45  
+02:33:45  Concurrency: 4 threads (target='dev')
+02:33:45  
+02:33:45  1 of 7 START sql view model staging.stg_priorities ............................. [RUN]
+02:33:45  2 of 7 START sql view model staging.stg_properties ............................. [RUN]
+02:33:45  4 of 7 START sql view model staging.stg_units .................................. [RUN]
+02:33:45  3 of 7 START sql view model staging.stg_tickets ................................ [RUN]
+02:33:45  1 of 7 OK created sql view model staging.stg_priorities ........................ [OK in 0.11s]
+02:33:45  4 of 7 OK created sql view model staging.stg_units ............................. [OK in 0.11s]
+02:33:45  3 of 7 OK created sql view model staging.stg_tickets ........................... [OK in 0.11s]
+02:33:45  2 of 7 OK created sql view model staging.stg_properties ........................ [OK in 0.12s]
+02:33:45  5 of 7 START sql table model marts.dim_property ................................ [RUN]
+02:33:45  5 of 7 OK created sql table model marts.dim_property ........................... [OK in 0.06s]
+02:33:45  6 of 7 START sql table model marts.fact_maintenance_ticket ..................... [RUN]
+02:33:46  6 of 7 OK created sql table model marts.fact_maintenance_ticket ................ [OK in 0.36s]
+02:33:46  7 of 7 START sql table model marts.mart_tickets_by_district_month .............. [RUN]
+02:33:46  7 of 7 OK created sql table model marts.mart_tickets_by_district_month ......... [OK in 0.03s]
+02:33:46  
+02:33:46  Finished running 3 table models, 4 view models in 0 hours 0 minutes and 0.71 seconds (0.71s).
+02:33:46  
+02:33:46  Completed successfully
+02:33:46  
+02:33:46  Done. PASS=7 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=7

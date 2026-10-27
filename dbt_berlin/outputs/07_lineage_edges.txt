@@ -1,0 +1,10 @@
+stg_properties               -> dim_property
+stg_units                    -> dim_property
+stg_tickets                  -> fact_maintenance_ticket
+stg_priorities               -> fact_maintenance_ticket
+dim_property                 -> fact_maintenance_ticket
+fact_maintenance_ticket      -> mart_tickets_by_district_month
+raw.priorities               -> stg_priorities
+raw.properties               -> stg_properties
+raw.tickets                  -> stg_tickets
+raw.units                    -> stg_units

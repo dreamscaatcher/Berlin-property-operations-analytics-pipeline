@@ -1,0 +1,34 @@
+02:33:41  Running with dbt=1.12.6
+02:33:41  dbt version: 1.12.6
+02:33:41  python version: 3.13.5
+02:33:41  python path: <repo>/dbt_berlin/.venv/bin/python3
+02:33:41  os info: Linux-6.12.94+-x86_64-with-glibc2.41
+02:33:41  Using profiles dir at <repo>/dbt_berlin
+02:33:41  Using profiles.yml file at <repo>/dbt_berlin/profiles.yml
+02:33:41  Using dbt_project.yml file at <repo>/dbt_berlin/dbt_project.yml
+02:33:41  adapter type: duckdb
+02:33:41  adapter version: 1.11.0
+02:33:41  Configuration:
+02:33:41    profiles.yml file [OK found and valid]
+02:33:41    dbt_project.yml file [OK found and valid]
+02:33:41  Required dependencies:
+02:33:41   - git [OK found]
+
+02:33:41  Connection:
+02:33:41    database: berlin
+02:33:41    schema: main
+02:33:41    path: berlin.duckdb
+02:33:41    config_options: None
+02:33:41    extensions: None
+02:33:41    settings: {}
+02:33:41    external_root: .
+02:33:41    use_credential_provider: None
+02:33:41    attach: None
+02:33:41    filesystems: None
+02:33:41    remote: None
+02:33:41    plugins: None
+02:33:41    disable_transactions: False
+02:33:41  Registered adapter: duckdb=1.11.0
+02:33:41    Connection test: [OK connection ok]
+
+02:33:41  All checks passed!

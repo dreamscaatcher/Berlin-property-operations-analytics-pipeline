@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: stg_tickets
+    description: "Cleaned tickets: IDs upper-cased, dates parsed, priority code extracted, TEST rows and duplicates removed."
+    columns:
+      - name: ticket_id
+        description: "Ticket number, e.g. MT122881. Primary key."
+        data_tests: [unique, not_null]
+      - name: property_id
+        description: "Property the ticket belongs to (upper case)."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_properties')
+                field: property_id
+      - name: priority
+        description: "Priority code P1 (emergency) to P4 (low)."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['P1', 'P2', 'P3', 'P4']
+      - name: created_at
+        description: "When the ticket was created (parsed from ISO or German text)."
+        data_tests: [not_null]
+
+  - name: stg_properties
+    description: "Cleaned property master data."
+    columns:
+      - name: property_id
+        description: "Property ID, e.g. P001. Primary key."
+        data_tests: [unique, not_null]
+
+  - name: stg_units
+    description: "Cleaned rental units."
+    columns:
+      - name: unit_id
+        description: "Unit ID, e.g. U00001. Primary key."
+        data_tests: [unique, not_null]
+
+  - name: stg_priorities
+    description: "Priority codes with SLA response/resolution hours."
+    columns:
+      - name: priority
+        description: "Priority code P1-P4. Primary key."
+        data_tests: [unique, not_null]

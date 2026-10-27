@@ -1,0 +1,7 @@
+berlin:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: berlin.duckdb
+      threads: 4

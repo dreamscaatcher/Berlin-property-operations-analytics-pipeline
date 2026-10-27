@@ -1,0 +1,17 @@
+name: berlin
+version: "1.0.0"
+profile: berlin
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  berlin:
+    staging:
+      +materialized: view     # staging = light cleaning, cheap views
+      +schema: staging
+    marts:
+      +materialized: table    # marts = finished tables Power BI reads
+      +schema: marts

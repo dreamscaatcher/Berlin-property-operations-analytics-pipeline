@@ -1,0 +1,168 @@
+// Berlin Property Operations Analytics - DAX measures for the Power BI WEB model (SYNTHETIC DATA)
+// Home table: _Measures. Derived from optima_project/powerbi/measures.dax; changes marked // CHANGED / REPLACED / NEW.
+
+Units = COUNTROWS ( dim_unit )
+
+Properties = DISTINCTCOUNT ( dim_unit[property_id] )
+
+Living Area m2 = SUM ( dim_unit[area_m2] )
+
+Soll = SUM ( fact_rent_roll[total_due] )
+
+Kaltmiete Due = SUM ( fact_rent_roll[kaltmiete_due] )
+
+NK Prepayment Due = SUM ( fact_rent_roll[nk_prepayment_due] )
+
+// CHANGED
+Paid To Snapshot = SUM ( fact_rent_roll[paid_to_snapshot] )
+
+// CHANGED
+Paid By Due Date = SUM ( fact_rent_roll[paid_by_due_date] )
+
+// CHANGED
+Paid By Month End = SUM ( fact_rent_roll[paid_by_month_end] )
+
+Collection Rate On Due Date % = DIVIDE ( [Paid By Due Date], [Soll] )
+
+Collection Rate In Month % = DIVIDE ( [Paid By Month End], [Soll] )
+
+Soll PY = CALCULATE ( [Soll], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+Soll YoY % = DIVIDE ( [Soll] - [Soll PY], [Soll PY] )
+
+Arrears Last Month =
+MAX ( mart_rent_arrears_monthly[month_start] )
+
+Open Arrears EOM =
+VAR LastMonth = [Arrears Last Month]
+RETURN
+    CALCULATE ( SUM ( mart_rent_arrears_monthly[open_arrears_eom] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Soll Last Month =
+VAR LastMonth = [Arrears Last Month]
+RETURN
+    CALCULATE ( SUM ( mart_rent_arrears_monthly[total_due] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Arrears Rate % = DIVIDE ( [Open Arrears EOM], [Soll Last Month] )   // open arrears ÷ monthly Soll
+
+Arrears 0-30 =
+VAR LastMonth = [Arrears Last Month]
+RETURN CALCULATE ( SUM ( mart_rent_arrears_monthly[arrears_0_30] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Arrears 31-60 =
+VAR LastMonth = [Arrears Last Month]
+RETURN CALCULATE ( SUM ( mart_rent_arrears_monthly[arrears_31_60] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Arrears 61-90 =
+VAR LastMonth = [Arrears Last Month]
+RETURN CALCULATE ( SUM ( mart_rent_arrears_monthly[arrears_61_90] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Arrears 90+ =
+VAR LastMonth = [Arrears Last Month]
+RETURN CALCULATE ( SUM ( mart_rent_arrears_monthly[arrears_90_plus] ), mart_rent_arrears_monthly[month_start] = LastMonth )
+
+Arrears 90+ Share % = DIVIDE ( [Arrears 90+], [Open Arrears EOM] )
+
+// REPLACED
+Open Arrears at Snapshot (from facts) =
+VAR AsOf = DATE ( 2026, 9, 30 )
+RETURN
+    SUMX (
+        CALCULATETABLE (
+            fact_rent_roll,
+            REMOVEFILTERS ( dim_date ),
+            fact_rent_roll[due_date] <= AsOf,
+            fact_rent_roll[due_date] > AsOf - 365
+        ),
+        MAX ( 0, fact_rent_roll[total_due] - fact_rent_roll[paid_to_snapshot] )
+    )
+
+Vacancy Rate % =
+DIVIDE ( SUM ( mart_occupancy_monthly[vacant_unit_days] ), SUM ( mart_occupancy_monthly[unit_days] ) )
+
+Re-lettings =
+CALCULATE ( COUNTROWS ( fact_vacancy_reletting ), NOT ISBLANK ( fact_vacancy_reletting[relet_date] ) )
+
+Avg Days To Re-let = AVERAGE ( fact_vacancy_reletting[days_vacant] )
+
+Median Days To Re-let = MEDIAN ( fact_vacancy_reletting[days_vacant] )
+
+Median Rent Uplift % = MEDIAN ( fact_vacancy_reletting[rent_uplift_pct] )
+
+Avg New Rent per m2 = AVERAGE ( fact_vacancy_reletting[new_rent_m2] )
+
+Units Still Vacant =
+CALCULATE ( COUNTROWS ( fact_vacancy_reletting ), fact_vacancy_reletting[still_vacant] = TRUE (), REMOVEFILTERS ( dim_date ) )
+
+Tickets = COUNTROWS ( fact_maintenance_ticket )
+
+Tickets per 100 Units p.a. =
+VAR Months = DISTINCTCOUNT ( fact_maintenance_ticket[created_month] )
+RETURN DIVIDE ( [Tickets] * 100 * 12, [Units] * Months )
+
+Response SLA % =
+DIVIDE (
+    CALCULATE ( [Tickets], fact_maintenance_ticket[met_response_sla] = TRUE () ),
+    CALCULATE ( [Tickets], NOT ISBLANK ( fact_maintenance_ticket[met_response_sla] ) )
+)
+
+Resolution SLA % =
+DIVIDE (
+    CALCULATE ( [Tickets], fact_maintenance_ticket[met_resolution_sla] = TRUE () ),
+    CALCULATE ( [Tickets], NOT ISBLANK ( fact_maintenance_ticket[met_resolution_sla] ) )
+)
+
+Median Response Hours = MEDIAN ( fact_maintenance_ticket[response_hours] )
+
+Median Resolution Hours = MEDIAN ( fact_maintenance_ticket[resolution_hours] )
+
+Open Tickets =
+CALCULATE ( [Tickets], fact_maintenance_ticket[is_open] = TRUE (), REMOVEFILTERS ( dim_date ) )
+
+Open Tickets Overdue =
+CALCULATE ( [Tickets], fact_maintenance_ticket[is_overdue_at_snapshot] = TRUE (), REMOVEFILTERS ( dim_date ) )
+
+Maintenance Cost = SUM ( fact_maintenance_ticket[cost_eur] )
+
+Maintenance Cost per Unit = DIVIDE ( [Maintenance Cost], [Units] )
+
+Portal Share % =
+DIVIDE ( CALCULATE ( [Tickets], fact_maintenance_ticket[channel] = "Mieterportal" ), [Tickets] )
+
+Statements = COUNTROWS ( fact_service_charge_statement )
+
+Statements On Time % =
+DIVIDE (
+    CALCULATE ( [Statements], fact_service_charge_statement[timeliness] = "Fristgerecht" ),
+    CALCULATE ( [Statements], fact_service_charge_statement[timeliness] IN { "Fristgerecht", "Verspätet" } )
+)
+
+Statements Pending = CALCULATE ( [Statements], fact_service_charge_statement[timeliness] = "Offen (Frist läuft)" )
+
+Avg Balance EUR = AVERAGE ( fact_service_charge_statement[balance_eur] )          // >0 Nachzahlung, <0 Guthaben
+
+Back-payment Share % = DIVIDE ( CALCULATE ( [Statements], fact_service_charge_statement[balance_eur] > 0 ), [Statements] )
+
+Forfeited Back-payments EUR = SUM ( fact_service_charge_statement[forfeited_backpayment_eur] )
+
+Avg Days To Issue = AVERAGE ( fact_service_charge_statement[days_to_issue] )
+
+Service Charge Cost per m2 Month =
+DIVIDE (
+    SUM ( fact_service_charge_cost[actual_cost] ),
+    SUMX (
+        FILTER ( fact_service_charge_statement, NOT ISBLANK ( fact_service_charge_statement[area_m2] ) ),
+        fact_service_charge_statement[area_m2] * fact_service_charge_statement[months_billed]
+    )
+)
+
+Heating kWh = SUM ( fact_energy_monthly[heating_kwh] )
+
+Heating kWh per m2 = DIVIDE ( [Heating kWh], [Living Area m2] )
+
+// NEW
+Cash Received (payment date) =
+CALCULATE (
+    SUM ( fact_payment_monthly[amount] ),
+    USERELATIONSHIP ( fact_payment_monthly[payment_month], dim_date[date] )
+)

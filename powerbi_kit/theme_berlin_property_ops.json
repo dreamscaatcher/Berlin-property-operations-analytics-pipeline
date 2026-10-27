@@ -1,0 +1,31 @@
+{
+  "name": "Berlin Property Ops - Corporate",
+  "dataColors": ["#1F4E79", "#2E86AB", "#F2A541", "#E4572E", "#2A9D6F", "#8E6C8A", "#59A5D8", "#C9A227", "#6C757D", "#A23B72"],
+  "background": "#FFFFFF",
+  "foreground": "#1E2A36",
+  "tableAccent": "#2E86AB",
+  "good": "#2A9D6F",
+  "neutral": "#F2A541",
+  "bad": "#E4572E",
+  "maximum": "#1F4E79",
+  "center": "#59A5D8",
+  "minimum": "#DCE8F3",
+  "textClasses": {
+    "callout": { "fontSize": 24, "fontFace": "Segoe UI Semibold", "color": "#1F3B57" },
+    "title": { "fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#1F3B57" },
+    "header": { "fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#1F3B57" },
+    "label": { "fontSize": 10, "fontFace": "Segoe UI", "color": "#6B7785" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [{ "show": true, "color": { "solid": { "color": "#E2E7EE" } }, "radius": 8 }]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#F4F6F9" } }, "transparency": 0 }]
+      }
+    }
+  }
+}

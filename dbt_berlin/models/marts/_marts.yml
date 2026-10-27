@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: dim_property
+    description: "One row per property with district, type, unit count and total area."
+    columns:
+      - name: property_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+
+  - name: fact_maintenance_ticket
+    description: "One row per ticket with district, SLA hours and the business rule met_resolution_sla."
+    columns:
+      - name: ticket_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+      - name: property_id
+        description: "Foreign key to dim_property (referential integrity test)."
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_property')
+                field: property_id
+      - name: priority
+        description: "P1-P4."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['P1', 'P2', 'P3', 'P4']
+      - name: met_resolution_sla
+        description: "True if resolved within the priority's SLA hours; null for open or cancelled tickets."
+
+  - name: mart_tickets_by_district_month
+    description: "Ticket KPIs per district and month: volume, open tickets, resolution SLA rate, cost."
+    columns:
+      - name: district
+        description: "Berlin district (or other city)."
+        data_tests: [not_null]
+      - name: created_month
+        description: "First day of the month the tickets were created."
+        data_tests: [not_null]

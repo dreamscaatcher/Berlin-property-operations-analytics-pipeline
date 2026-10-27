@@ -1,0 +1,6 @@
+# Main pipeline. Versions pinned so the seeded generator reproduces the same numbers.
+# All four have ready-made wheels for Windows + Python 3.14 (64-bit).
+numpy==2.5.4
+pandas==3.0.6
+duckdb==1.5.6
+openpyxl==3.1.5
